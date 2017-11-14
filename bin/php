@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. && pwd )"
+
+. "${ROOT}"/bin/lib/tty.sh
+. "${ROOT}"/docker/lib/docker_host_user_id.sh
+
+docker run \
+    -e LOCAL_USER_ID=${DOCKER_HOST_USER_ID} \
+    -i \
+    ${TTY} \
+    -v $(pwd):/workdir \
+    -v ~/.composer:/home/user/.composer \
+    -v ~/.ssh:/home/user/.ssh \
+    --rm \
+    chekote/php:7.1.11-behat php "$@"
