@@ -1,0 +1,13 @@
+{
+    "name": "chekote/behat-assertion-retry",
+    "description": "Automatically retry \"Then\" steps in Behat",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Donald Tyler",
+            "email": "domhnall.tilliere@gmail.com"
+        }
+    ],
+    "require": {}
+}
