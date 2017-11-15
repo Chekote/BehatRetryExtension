@@ -9,5 +9,7 @@
             "email": "domhnall.tilliere@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "behat/behat": "~3.0"
+    }
 }

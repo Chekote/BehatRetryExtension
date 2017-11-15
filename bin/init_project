@@ -7,3 +7,8 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 echo "Installing Composer..."
 "$ROOT"/bin/init/install_composer.sh
 exitCheck $?
+
+echo ""
+echo "Installing Composer dependencies..."
+composer install
+exitCheck $?
