@@ -9,6 +9,11 @@
             "email": "domhnall.tilliere@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-0": {
+            "Chekote\\BehatRetryExtension": "src/"
+        }
+    },
     "require": {
         "behat/behat": "~3.0"
     }
