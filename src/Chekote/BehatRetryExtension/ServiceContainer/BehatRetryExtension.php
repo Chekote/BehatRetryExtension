@@ -61,6 +61,7 @@ class BehatRetryExtension implements Extension
      */
     public function configure(ArrayNodeDefinition $builder)
     {
+        /* @scrutinizer ignore-call Scrutinizer does not understand the context that determines the return types  */
         $builder
             ->children()
                 ->floatNode(self::CONFIG_PARAM_TIMEOUT)->defaultValue(5)->end()
