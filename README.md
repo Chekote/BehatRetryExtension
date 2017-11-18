@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Chekote/BehatRetryExtension.svg?style=shield)](https://circleci.com/gh/Chekote/BehatRetryExtension)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Chekote/BehatRetryExtension/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Chekote/BehatRetryExtension/?branch=master)
 [![StyleCI](https://styleci.io/repos/110754153/shield?style=plastic)](https://styleci.io/repos/110754153)
 
 # behat-then-spinner
