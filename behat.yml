@@ -1,0 +1,7 @@
+default:
+  suites:
+    default:
+      path: %paths.base%/features
+      contexts:
+        - FeatureContext
+        - FriendsOfBehat\TestContext\Context\TestContext
