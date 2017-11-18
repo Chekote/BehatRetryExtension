@@ -13,4 +13,4 @@ docker run \
     -v ~/.composer:/home/user/.composer \
     -v ~/.ssh:/home/user/.ssh \
     --rm \
-    chekote/php:7.1.11-behat php "$@"
+    chekote/php:7.1.11-behat-a php "$@"
