@@ -35,7 +35,7 @@ class BehatRetryExtension implements Extension
     {
         $definition = new Definition(RuntimeStepTester::class, [
             new Reference(DefinitionExtension::FINDER_ID),
-            new Reference(CallExtension::CALL_CENTER_ID)
+            new Reference(CallExtension::CALL_CENTER_ID),
         ]);
 
         $container->setDefinition(self::SERVICE_ID, $definition);
@@ -88,7 +88,8 @@ class BehatRetryExtension implements Extension
      *
      * @param ContainerBuilder $container the container with the parameters to use.
      */
-    private function loadRuntimeStepTester(ContainerBuilder $container) {
+    private function loadRuntimeStepTester(ContainerBuilder $container)
+    {
         RuntimeStepTester::$timeout = $container->getParameter(self::CONFIG_TIMEOUT);
         RuntimeStepTester::$interval = $container->getParameter(self::CONFIG_RETRY_INTERVAL);
     }

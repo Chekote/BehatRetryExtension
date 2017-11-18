@@ -113,7 +113,7 @@ final class RuntimeStepTester implements StepTester
      * @param FeatureNode  $feature
      * @param StepNode     $step
      * @param SearchResult $search
-     * @param Boolean      $skip
+     * @param bool         $skip
      *
      * @return StepResult
      */
@@ -136,7 +136,7 @@ final class RuntimeStepTester implements StepTester
 
         $call = $this->createDefinitionCall($env, $feature, $search, $step);
 
-        $lambda = function() use ($call) {
+        $lambda = function () use ($call) {
             return $this->callCenter->makeCall($call);
         };
 
