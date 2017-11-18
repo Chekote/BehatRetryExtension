@@ -1,3 +1,6 @@
+[![Packagist Latest Stable Version](https://poser.pugx.org/chekote/behat-retry-extension/version.svg)](https://packagist.org/packages/chekote/behat-retry-extension)
+[![Packagist Latest Unstable Version](https://poser.pugx.org/chekote/behat-retry-extension/v/unstable.svg)](https://packagist.org/packages/chekote/behat-retry-extension)
+[![Packagist Total Downloads](https://poser.pugx.org/chekote/behat-retry-extension/downloads.svg)](https://packagist.org/packages/chekote/behat-retry-extension)
 [![CircleCI](https://circleci.com/gh/Chekote/BehatRetryExtension.svg?style=shield)](https://circleci.com/gh/Chekote/BehatRetryExtension)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Chekote/BehatRetryExtension/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Chekote/BehatRetryExtension/?branch=master)
 [![StyleCI](https://styleci.io/repos/110754153/shield?style=plastic)](https://styleci.io/repos/110754153)
