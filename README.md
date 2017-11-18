@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Chekote/BehatRetryExtension.svg?style=shield)](https://circleci.com/gh/Chekote/BehatRetryExtension)
+
 # behat-then-spinner
 Automatically spin (retry) "Then" steps in Behat
 
