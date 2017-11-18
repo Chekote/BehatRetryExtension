@@ -4,7 +4,7 @@ use Behat\Behat\Context\Context;
 use Chekote\BehatRetryExtension\Tester\RuntimeStepTester;
 
 /**
- * Context for working with auto-retrying assertions (Then steps)
+ * Context for working with auto-retrying assertions (Then steps).
  */
 class BehatRetryContext implements Context
 {
@@ -20,7 +20,8 @@ class BehatRetryContext implements Context
      * @Given assertions will retry for :timeout seconds before failing
      * @param float $timeout the number of seconds
      */
-    public function setTimeout($timeout) {
+    public function setTimeout($timeout)
+    {
         RuntimeStepTester::$timeout = $timeout;
     }
 
@@ -30,7 +31,8 @@ class BehatRetryContext implements Context
      * @Given assertions will retry every :interval nanoseconds
      * @param int $interval the number of nanoseconds
      */
-    public function setInterval($interval) {
+    public function setInterval($interval)
+    {
         RuntimeStepTester::$interval = $interval;
     }
 
@@ -42,7 +44,8 @@ class BehatRetryContext implements Context
      *
      * @BeforeScenario
      */
-    public function recordConfig() {
+    public function recordConfig()
+    {
         $this->originalTimeout = RuntimeStepTester::$timeout;
         $this->originalInterval = RuntimeStepTester::$interval;
     }
@@ -54,7 +57,8 @@ class BehatRetryContext implements Context
      *
      * @AfterScenario
      */
-    public function restoreConfig() {
+    public function restoreConfig()
+    {
         $this->setTimeout($this->originalTimeout);
         $this->setInterval($this->originalInterval);
     }

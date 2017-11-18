@@ -51,7 +51,7 @@ class FeatureContext implements Context
      * Writes content to a file immediately (non blocking).
      *
      * @Given the file :path contents are :content
-     * @param string $file the path to the file to write.
+     * @param string $file    the path to the file to write.
      * @param string $content the content to write to the file.
      */
     public function writeFile(string $file, string $content)
@@ -63,9 +63,9 @@ class FeatureContext implements Context
      * Writes content to a file after a given time (non blocking).
      *
      * @Given the file :path contents will be :content in :timeout seconds
-     * @param string $file the path to the file to write.
+     * @param string $file    the path to the file to write.
      * @param string $content the content to write to the file.
-     * @param int $seconds the number of seconds to wait before writing to the file.
+     * @param int    $seconds the number of seconds to wait before writing to the file.
      */
     public function writeFileDelayed(string $file, string $content, int $seconds = 0)
     {
@@ -92,7 +92,7 @@ class FeatureContext implements Context
      * Asserts that the specified file has the specified contents.
      *
      * @Then the file :file contents should be :content
-     * @param string $file the path to the file to check.
+     * @param string $file    the path to the file to check.
      * @param string $content the content to check for.
      */
     public function assertFileContents(string $file, string $content)
