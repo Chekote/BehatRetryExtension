@@ -36,6 +36,9 @@ final class RuntimeStepTester implements StepTester
     /** @var int number of nanoseconds to wait between each retry of "Then" steps */
     public static $interval;
 
+    /** @var array list of Gherkin keywords */
+    protected static $keywords = ['Given', 'When', 'Then'];
+
     /**
      * @var DefinitionFinder
      */
@@ -74,6 +77,8 @@ final class RuntimeStepTester implements StepTester
      */
     public function test(Environment $env, FeatureNode $feature, StepNode $step, $skip = false)
     {
+        $this->updateLastKeyword($step);
+
         try {
             $search = $this->searchDefinition($env, $feature, $step);
             $result = $this->testDefinition($env, $feature, $step, $search, $skip);
@@ -119,13 +124,6 @@ final class RuntimeStepTester implements StepTester
      */
     private function testDefinition(Environment $env, FeatureNode $feature, StepNode $step, SearchResult $search, $skip)
     {
-        $keyword = $step->getKeyword();
-        if (in_array($keyword, ['Given', 'When', 'Then'])) {
-            // We've entered a new major keyword block. Record the keyword.
-            // This allows us to know where we are when processing And or But steps
-            $this->lastKeyword = $keyword;
-        }
-
         if (!$search->hasMatch()) {
             return new UndefinedStepResult();
         }
@@ -149,6 +147,22 @@ final class RuntimeStepTester implements StepTester
         $result = $this->lastKeyword == 'Then' && self::$timeout ? $this->spin($lambda) : $lambda();
 
         return new ExecutedStepResult($search, $result);
+    }
+
+    /**
+     * Records the keyword for the step.
+     *
+     * This allows us to know where we are when processing And or But steps.
+     *
+     * @param  StepNode $step
+     * @return void
+     */
+    protected function updateLastKeyword(StepNode $step)
+    {
+        $keyword = $step->getKeyword();
+        if (in_array($keyword, self::$keywords)) {
+            $this->lastKeyword = $keyword;
+        }
     }
 
     /**
