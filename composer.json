@@ -1,7 +1,7 @@
 {
     "name": "chekote/behat-retry-extension",
     "description": "Automatically retry \"Then\" steps in Behat",
-    "type": "library",
+    "type": "behat-extension",
     "license": "MIT",
     "authors": [
         {
