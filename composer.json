@@ -1,6 +1,7 @@
 {
     "name": "chekote/behat-retry-extension",
     "description": "Automatically retry \"Then\" steps in Behat",
+    "keywords": ["asynchronous", "race-condition", "retry", "test"],
     "type": "behat-extension",
     "license": "MIT",
     "authors": [
