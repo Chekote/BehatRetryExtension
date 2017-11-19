@@ -36,6 +36,9 @@ final class RuntimeStepTester implements StepTester
     /** @var int number of nanoseconds to wait between each retry of "Then" steps */
     public static $interval;
 
+    /** @var array list of Gherkin keywords */
+    protected static $keywords = ['Given', 'When', 'Then'];
+
     /**
      * @var DefinitionFinder
      */
@@ -74,6 +77,8 @@ final class RuntimeStepTester implements StepTester
      */
     public function test(Environment $env, FeatureNode $feature, StepNode $step, $skip = false)
     {
+        $this->updateLastKeyword($step);
+
         try {
             $search = $this->searchDefinition($env, $feature, $step);
             $result = $this->testDefinition($env, $feature, $step, $search, $skip);
@@ -119,13 +124,6 @@ final class RuntimeStepTester implements StepTester
      */
     private function testDefinition(Environment $env, FeatureNode $feature, StepNode $step, SearchResult $search, $skip)
     {
-        $keyword = $step->getKeyword();
-        if (in_array($keyword, ['Given', 'When', 'Then'])) {
-            // We've entered a new major keyword block. Record the keyword.
-            // This allows us to know where we are when processing And or But steps
-            $this->lastKeyword = $keyword;
-        }
-
         if (!$search->hasMatch()) {
             return new UndefinedStepResult();
         }
@@ -136,19 +134,46 @@ final class RuntimeStepTester implements StepTester
 
         $call = $this->createDefinitionCall($env, $feature, $search, $step);
 
-        $lambda = function () use ($call) {
-            return $this->callCenter->makeCall($call);
-        };
+        $result = $this->makeCall($call);
 
+        return new ExecutedStepResult($search, $result);
+    }
+
+    /**
+     * Records the keyword for the step.
+     *
+     * This allows us to know where we are when processing And or But steps.
+     *
+     * @param  StepNode $step
+     * @return void
+     */
+    protected function updateLastKeyword(StepNode $step)
+    {
+        $keyword = $step->getKeyword();
+        if (in_array($keyword, self::$keywords)) {
+            $this->lastKeyword = $keyword;
+        }
+    }
+
+    /**
+     * Calls the specified definition, either directly, or via spin() if self::$timeout is not 0.
+     *
+     * @param  DefinitionCall $call the call to make.
+     * @return CallResult     the result of the call.
+     */
+    protected function makeCall(DefinitionCall $call)
+    {
         // @todo We can only "spin" if we are interacting with a remote browser. If the browser is
         // running in the same thread as this test (such as with Goutte or Zombie), then spinning
         // will only prevent that process from continuing, and the test will either pass immediately,
         // or not at all. We need to find out how to check what Driver we're using...
-
-        // if we're in a Then (assertion) block, and self::$timeout is not zero, we need to spin
-        $result = $this->lastKeyword == 'Then' && self::$timeout ? $this->spin($lambda) : $lambda();
-
-        return new ExecutedStepResult($search, $result);
+        if ($this->lastKeyword == 'Then' && self::$timeout) {
+            return $this->spin(function () use ($call) {
+                return $this->callCenter->makeCall($call);
+            });
+        } else {
+            return $this->callCenter->makeCall($call);
+        }
     }
 
     /**
