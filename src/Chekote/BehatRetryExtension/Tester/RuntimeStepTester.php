@@ -134,17 +134,7 @@ final class RuntimeStepTester implements StepTester
 
         $call = $this->createDefinitionCall($env, $feature, $search, $step);
 
-        $lambda = function () use ($call) {
-            return $this->callCenter->makeCall($call);
-        };
-
-        // @todo We can only "spin" if we are interacting with a remote browser. If the browser is
-        // running in the same thread as this test (such as with Goutte or Zombie), then spinning
-        // will only prevent that process from continuing, and the test will either pass immediately,
-        // or not at all. We need to find out how to check what Driver we're using...
-
-        // if we're in a Then (assertion) block, and self::$timeout is not zero, we need to spin
-        $result = $this->lastKeyword == 'Then' && self::$timeout ? $this->spin($lambda) : $lambda();
+        $result = $this->makeCall($call);
 
         return new ExecutedStepResult($search, $result);
     }
@@ -162,6 +152,27 @@ final class RuntimeStepTester implements StepTester
         $keyword = $step->getKeyword();
         if (in_array($keyword, self::$keywords)) {
             $this->lastKeyword = $keyword;
+        }
+    }
+
+    /**
+     * Calls the specified definition, either directly, or via spin() if self::$timeout is not 0.
+     *
+     * @param  DefinitionCall $call the call to make.
+     * @return CallResult     the result of the call.
+     */
+    protected function makeCall(DefinitionCall $call)
+    {
+        // @todo We can only "spin" if we are interacting with a remote browser. If the browser is
+        // running in the same thread as this test (such as with Goutte or Zombie), then spinning
+        // will only prevent that process from continuing, and the test will either pass immediately,
+        // or not at all. We need to find out how to check what Driver we're using...
+        if ($this->lastKeyword == 'Then' && self::$timeout) {
+            return $this->spin(function () use ($call) {
+                return $this->callCenter->makeCall($call);
+            });
+        } else {
+            return $this->callCenter->makeCall($call);
         }
     }
 
