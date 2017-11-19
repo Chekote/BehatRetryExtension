@@ -30,7 +30,7 @@ use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
  */
 final class RuntimeStepTester implements StepTester
 {
-    /** Number of seconds to attempt "Then" steps before accepting a failure */
+    /** @var float Number of seconds to attempt "Then" steps before accepting a failure */
     public static $timeout;
 
     /** @var int number of nanoseconds to wait between each retry of "Then" steps */
