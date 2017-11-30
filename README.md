@@ -23,7 +23,7 @@ composer require --dev chekote/behat-retry-extension
 default:
     # ...
     extensions:
-        Chekote\BehatRetryExtension
+        Chekote\BehatRetryExtension: ~
 ```
 
 3. Optionally configure the extension
