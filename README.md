@@ -75,8 +75,8 @@ export PATH=./bin:$PATH
 Clone the repository:
 
 ```bash
-git clone git@github.com:Chekote/behat-then-spinner.git
-cd behat-then-spinner
+git clone git@github.com:Chekote/BehatRetryExtension.git
+cd BehatRetryExtension
 ```
 
 Initialize the project:
