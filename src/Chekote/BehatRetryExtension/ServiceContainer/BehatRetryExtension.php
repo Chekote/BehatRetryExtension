@@ -23,10 +23,12 @@ class BehatRetryExtension implements Extension
     const CONFIG_PARAM_ALL = 'parameters';
     const CONFIG_PARAM_INTERVAL = 'interval';
     const CONFIG_PARAM_TIMEOUT = 'timeout';
+    const CONFIG_PARAM_STRICT_KEYWORDS = 'strictKeywords';
 
     const CONFIG_ALL = self::CONFIG_KEY . '.' . self::CONFIG_PARAM_ALL;
     const CONFIG_RETRY_INTERVAL = self::CONFIG_KEY . '.' . self::CONFIG_PARAM_INTERVAL;
     const CONFIG_TIMEOUT = self::CONFIG_KEY . '.' . self::CONFIG_PARAM_TIMEOUT;
+    const CONFIG_STRICT_KEYWORDS = self::CONFIG_KEY . '.' . self::CONFIG_PARAM_STRICT_KEYWORDS;
 
     /**
      * {@inheritdoc}
@@ -66,6 +68,7 @@ class BehatRetryExtension implements Extension
             ->children()
                 ->floatNode(self::CONFIG_PARAM_TIMEOUT)->defaultValue(5)->end()
                 ->integerNode(self::CONFIG_PARAM_INTERVAL)->defaultValue(100000000)->end()
+                ->booleanNode(self::CONFIG_PARAM_STRICT_KEYWORDS)->defaultTrue()->end()
             ->end()
         ->end();
     }
@@ -78,6 +81,7 @@ class BehatRetryExtension implements Extension
         $container->setParameter(self::CONFIG_ALL, $config);
         $container->setParameter(self::CONFIG_TIMEOUT, $config[self::CONFIG_PARAM_TIMEOUT]);
         $container->setParameter(self::CONFIG_RETRY_INTERVAL, $config[self::CONFIG_PARAM_INTERVAL]);
+        $container->setParameter(self::CONFIG_STRICT_KEYWORDS, $config[self::CONFIG_PARAM_STRICT_KEYWORDS]);
 
         $this->loadRuntimeStepTester($container);
     }
@@ -93,5 +97,6 @@ class BehatRetryExtension implements Extension
     {
         RuntimeStepTester::$timeout = $container->getParameter(self::CONFIG_TIMEOUT);
         RuntimeStepTester::$interval = $container->getParameter(self::CONFIG_RETRY_INTERVAL);
+        RuntimeStepTester::$strictKeywords = $container->getParameter(self::CONFIG_STRICT_KEYWORDS);
     }
 }
