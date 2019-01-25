@@ -18,12 +18,13 @@ use Behat\Testwork\Call\CallResult;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Tester\Setup\SuccessfulSetup;
 use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
+use Chekote\BehatRetryExtension\Definition\Exception\StrictKeywordException;
 
 /**
  * Tester executing step tests in the runtime.
  *
  * This class is a copy of \Behat\Behat\Tester\Runtime\RuntimeStepTester by Konstantin Kudryashov <ever.zet@gmail.com>.
- * It has a modified testDefinition() method to implement the retry functionality.
+ * It has a modified testDefinition() method to implement the retry functionality, and support strict keywords.
  *
  * I would ideally like to extend or wrap the existing RuntimeStepTester, but neither is possible because the class
  * is final, and the method is private. v_v
@@ -35,6 +36,12 @@ final class RuntimeStepTester implements StepTester
 
     /** @var int number of nanoseconds to wait between each retry of "Then" steps */
     public static $interval;
+
+    /**
+     * @var bool true if steps should only match when the correct keyword is used. false steps should match regardless
+     *           of keyword
+     */
+    public static $strictKeywords;
 
     /** @var array list of Gherkin keywords */
     protected static $keywords = ['Given', 'When', 'Then'];
@@ -108,7 +115,13 @@ final class RuntimeStepTester implements StepTester
      */
     private function searchDefinition(Environment $env, FeatureNode $feature, StepNode $step)
     {
-        return $this->definitionFinder->findDefinition($env, $feature, $step);
+        $result = $this->definitionFinder->findDefinition($env, $feature, $step);
+
+        if (self::$strictKeywords && $result->hasMatch() && $this->lastKeyword != $result->getMatchedDefinition()->getType()) {
+            throw new StrictKeywordException($this->lastKeyword, $result->getMatchedDefinition());
+        }
+
+        return $result;
     }
 
     /**

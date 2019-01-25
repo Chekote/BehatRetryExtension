@@ -14,6 +14,9 @@ class BehatRetryContext implements Context
     /** @var int the interval setting for RuntimeStepTester before a Scenario is ran */
     protected $originalInterval;
 
+    /** @var bool the strict keywords setting for RuntimeStepTester before a Scenario is ran */
+    protected $originalStrictKeywords;
+
     /**
      * Sets the number of seconds that an assertion (Then step) should retry before failing.
      *
@@ -37,6 +40,26 @@ class BehatRetryContext implements Context
     }
 
     /**
+     * Requires that steps should only match when the correct keyword is used.
+     *
+     * @Given strict keywords are required
+     */
+    public function enableStrictKeywords()
+    {
+        RuntimeStepTester::$strictKeywords = true;
+    }
+
+    /**
+     * Allows steps to match if if the correct keyword is not used.
+     *
+     * @Given strict keywords are not required
+     */
+    public function disableStrictKeywords()
+    {
+        RuntimeStepTester::$strictKeywords = false;
+    }
+
+    /**
      * Records the configuration of the RuntimeStepTester.
      *
      * The config is recorded so that it can be modified after the Scenario has ran, thus ensuring that config settings
@@ -48,6 +71,7 @@ class BehatRetryContext implements Context
     {
         $this->originalTimeout = RuntimeStepTester::$timeout;
         $this->originalInterval = RuntimeStepTester::$interval;
+        $this->originalStrictKeywords = RuntimeStepTester::$strictKeywords;
     }
 
     /**
@@ -61,5 +85,6 @@ class BehatRetryContext implements Context
     {
         $this->setTimeout($this->originalTimeout);
         $this->setInterval($this->originalInterval);
+        $this->originalStrictKeywords ? $this->enableStrictKeywords() : $this->disableStrictKeywords();
     }
 }

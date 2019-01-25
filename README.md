@@ -36,6 +36,7 @@ default:
         Chekote\BehatRetryExtension:
           timeout: 10
           interval: 1000000000
+          strict-keywords: true
 ```
 
 ## Configuration Options
@@ -57,6 +58,22 @@ Default: 100000000 (0.1 seconds)
 The interval is how many nanoseconds the extension will wait between attempts. The default is to attempt 10 times a second. Attempting the retry more frequently will potentially allow your tests to pass quicker, but this depends on your environment.
 
 It is possible that attempting the assertion too frequently will put a load on your application in such a way that the tests actually take longer to run. You will need to experiment with your particular application to determine what setting is best for you.
+
+### Strict Keywords
+
+Type: Boolean
+
+Default: true
+
+When enabled, the Strict Keywords setting will only allow a step definition to be invoked if the correct keyword is used. For example, you cannot invoke a step definition of "Then I should see..." by using "Given I should see..." or "When I should see...". Note that when using "And" or "But", the extension will understand the context and consider these to be the same as the previous keyword. For example, the following "But" would be considered a "Then" as far as this extension is concerned:
+
+```gherkin
+Given I visit "/home"
+Then I should see "Welcome"
+But I should not see "Logout"
+```
+
+This setting defaults to true and it is highly recommended that you do not disable it. If this feature is disabled, it will allow a developer to use "Then" to invoke a non-Then step, causing the extension to spin a "Given" or a "When". Equally problematic, disabling this feature will allow a developer to use a "Given" or "When" to invoke a "Then", preventing the extension from spinning the "Then" step.
 
 ## Development
 
