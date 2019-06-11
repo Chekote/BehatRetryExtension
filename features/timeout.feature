@@ -12,7 +12,6 @@ Feature: Only fail "Then" steps after timeout has expired
         default:
           suites:
             default:
-              path: %paths.base%/features
               contexts:
                 - FeatureContext
           extensions:
@@ -31,7 +30,6 @@ Feature: Only fail "Then" steps after timeout has expired
         default:
           suites:
             default:
-              path: %paths.base%/features
               contexts:
                 - FeatureContext
           extensions:
