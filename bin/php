@@ -10,8 +10,8 @@ docker run \
     -e "LOCAL_USER_ID=$DOCKER_HOST_USER_ID" \
     -i \
     $TTY \
-    -v "$(pwd):/workdir" \
-    -v ~/.composer:/home/user/.composer \
-    -v ~/.ssh:/home/user/.ssh \
+    -v "$(pwd):/workdir:delegated" \
+    -v ~/.composer:/home/user/.composer:delegated \
+    -v ~/.ssh:/home/user/.ssh:delegated \
     --rm \
     chekote/php:7.3.33-behat3.4 php "$@"
