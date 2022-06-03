@@ -35,7 +35,7 @@ default:
     extensions:
         Chekote\BehatRetryExtension:
           timeout: 10
-          interval: 1000000000
+          interval: 999999999
           strictKeywords: true
 ```
 
