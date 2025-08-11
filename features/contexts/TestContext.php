@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace FriendsOfBehat\TestContext\Context;
+namespace features\contexts;
 
 use Behat\Behat\Context\Context;
 use Symfony\Component\Filesystem\Filesystem;
