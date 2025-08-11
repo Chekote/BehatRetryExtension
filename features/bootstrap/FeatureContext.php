@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use FriendsOfBehat\TestContext\Context\TestContext;
+use features\contexts\TestContext;
 
 /**
  * Context for setting the working directory for TestContext's Behat.

@@ -3,4 +3,4 @@ default:
     default:
       contexts:
         - FeatureContext
-        - FriendsOfBehat\TestContext\Context\TestContext
+        - features\contexts\TestContext

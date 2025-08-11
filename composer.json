@@ -13,6 +13,9 @@
     "autoload": {
         "psr-0": {
             "Chekote\\BehatRetryExtension": "src/"
+        },
+        "psr-4": {
+            "features\\": "features/"
         }
     },
     "require": {
