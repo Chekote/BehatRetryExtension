@@ -206,6 +206,20 @@ FEA
         $this->process->wait();
     }
 
+        /**
+     * @When /^I run Behat with "([^"]+)"$/
+     */
+    public function iRunBehatWith($extraArgs): void
+    {
+        $args = [self::$phpBin, trim(escapeshellarg(BEHAT_BIN_PATH), "'"), '--strict', '-vvv', '--no-interaction', '--lang=en'];
+        foreach (explode(' ', $extraArgs) as $arg) {
+            $args[] = $arg;
+        }
+        $this->process = new Process($args, self::$workingDir);
+        $this->process->start();
+        $this->process->wait();
+    }
+
     /**
      * @Then /^it should pass$/
      */
