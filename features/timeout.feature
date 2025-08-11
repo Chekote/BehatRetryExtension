@@ -38,3 +38,19 @@ Feature: Only fail "Then" steps after timeout has expired
         """
     When I run Behat
     Then it should pass
+
+
+  Scenario: CLI timeout option overrides config file setting
+    Given a Behat configuration containing:
+        """
+        default:
+          suites:
+            default:
+              contexts:
+                - FeatureContext
+          extensions:
+            Chekote\BehatRetryExtension:
+              timeout: 0
+        """
+    When I run Behat with "--retry-timeout=2"
+    Then it should pass
