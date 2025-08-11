@@ -2,6 +2,7 @@
 
 use Behat\Behat\Definition\ServiceContainer\DefinitionExtension;
 use Behat\Testwork\Call\ServiceContainer\CallExtension;
+use Behat\Testwork\Cli\ServiceContainer\CliExtension;
 use Behat\Testwork\ServiceContainer\Extension;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Chekote\BehatRetryExtension\Tester\RuntimeStepTester;
@@ -78,6 +79,8 @@ class BehatRetryExtension implements Extension
      */
     public function load(ContainerBuilder $container, array $config)
     {
+        $this->loadRetryCliController($container);
+
         $container->setParameter(self::CONFIG_ALL, $config);
         $container->setParameter(self::CONFIG_TIMEOUT, $config[self::CONFIG_PARAM_TIMEOUT]);
         $container->setParameter(self::CONFIG_RETRY_INTERVAL, $config[self::CONFIG_PARAM_INTERVAL]);
@@ -98,5 +101,19 @@ class BehatRetryExtension implements Extension
         RuntimeStepTester::$timeout = $container->getParameter(self::CONFIG_TIMEOUT);
         RuntimeStepTester::$interval = $container->getParameter(self::CONFIG_RETRY_INTERVAL);
         RuntimeStepTester::$strictKeywords = $container->getParameter(self::CONFIG_STRICT_KEYWORDS);
+    }
+
+
+    /**
+     * Loads the RetryCliController service into the container.
+     *
+     * @param ContainerBuilder $container the container to load the service into.
+     */
+    private function loadRetryCliController(ContainerBuilder $container)
+    {
+        $definition = new Definition(RetryCliController::class);
+        $definition->addTag(CliExtension::CONTROLLER_TAG, ['priority' => 1000]);
+        $definition->setPublic(true);
+        $container->setDefinition('app.retry_cli_controller', $definition);
     }
 }
