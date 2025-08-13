@@ -20,6 +20,7 @@ class BehatRetryExtension implements Extension
 
     const CONFIG_KEY = 'spinner';
 
+    const CONFIG_ENV_TIMEOUT = 'BEHAT_RETRY_TIMEOUT';
     const CONFIG_PARAM_ALL = 'parameters';
     const CONFIG_PARAM_INTERVAL = 'interval';
     const CONFIG_PARAM_TIMEOUT = 'timeout';
@@ -79,7 +80,11 @@ class BehatRetryExtension implements Extension
     public function load(ContainerBuilder $container, array $config)
     {
         $container->setParameter(self::CONFIG_ALL, $config);
-        $container->setParameter(self::CONFIG_TIMEOUT, $config[self::CONFIG_PARAM_TIMEOUT]);
+        $envTimeout = $this->getEnvTimeout();
+        $container->setParameter(
+            self::CONFIG_TIMEOUT,
+            $envTimeout !== null ? $envTimeout : $config[self::CONFIG_PARAM_TIMEOUT]
+        );
         $container->setParameter(self::CONFIG_RETRY_INTERVAL, $config[self::CONFIG_PARAM_INTERVAL]);
         $container->setParameter(self::CONFIG_STRICT_KEYWORDS, $config[self::CONFIG_PARAM_STRICT_KEYWORDS]);
 
@@ -98,5 +103,29 @@ class BehatRetryExtension implements Extension
         RuntimeStepTester::$timeout = $container->getParameter(self::CONFIG_TIMEOUT);
         RuntimeStepTester::$interval = $container->getParameter(self::CONFIG_RETRY_INTERVAL);
         RuntimeStepTester::$strictKeywords = $container->getParameter(self::CONFIG_STRICT_KEYWORDS);
+    }
+
+    /**
+     * Gets the timeout from the environment variable, if set.
+     *
+     * @return int|null the timeout in seconds, or null if not set or invalid.
+     */
+    private function getEnvTimeout(): ?int
+    {
+        $value = getenv(self::CONFIG_ENV_TIMEOUT);
+        if ($value === false || $value === '') {
+            return null;
+        }
+
+        if(filter_var($value, FILTER_VALIDATE_INT) === false) {
+            echo 'Warning: Environment variable ' . self::CONFIG_ENV_TIMEOUT .
+                ' should be an integer, got "' . $value . '"' . PHP_EOL;
+
+            return null;
+        }
+
+        echo $value;
+
+        return (int) $value;
     }
 }
