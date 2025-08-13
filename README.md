@@ -49,6 +49,8 @@ Default: 5
 
 The timeout setting is the number of seconds that the extension should retry "Then" steps until they are considered a failure.
 
+This can be overriden by setting the `BEHAT_RETRY_TIMEOUT` environment variable (e.g. `BEHAT_RETRY_TIMEOUT=0 behat ...args...`) for setting custom timeouts for a specific execution.
+
 ### Interval
 
 Type: Integer
