@@ -38,3 +38,19 @@ Feature: Only fail "Then" steps after timeout has expired
         """
     When I run Behat
     Then it should pass
+
+  Scenario: Timeout is set via environment variable overrides configuration
+    Given a Behat configuration containing:
+        """
+        default:
+          suites:
+            default:
+              contexts:
+                - FeatureContext
+          extensions:
+            Chekote\BehatRetryExtension:
+              timeout: 0
+        """
+    And the BEHAT_RETRY_TIMEOUT environment variable is set to "2"
+    When I run Behat
+    Then it should pass
