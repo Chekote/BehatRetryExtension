@@ -108,24 +108,35 @@ class BehatRetryExtension implements Extension
     /**
      * Gets the timeout from the environment variable, if set.
      *
-     * @return int|null the timeout in seconds, or null if not set or invalid.
+     * @return float|null the timeout in seconds, or null if not set or invalid.
      */
-    private function getEnvTimeout(): ?int
+    private function getEnvTimeout(): ?float
     {
-        $value = getenv(self::CONFIG_ENV_TIMEOUT);
-        if ($value === false || $value === '') {
+        $raw = getenv(self::CONFIG_ENV_TIMEOUT);
+        if ($raw === false) {
             return null;
         }
 
-        if(filter_var($value, FILTER_VALIDATE_INT) === false) {
-            echo 'Warning: Environment variable ' . self::CONFIG_ENV_TIMEOUT .
-                ' should be an integer, got "' . $value . '"' . PHP_EOL;
+        $value = trim($raw);
+        if ($value === '') {
+            return null;
+        }
+
+        if (!is_numeric($value)) {
+            fwrite(STDERR, 'Warning: Environment variable ' . self::CONFIG_ENV_TIMEOUT .
+                ' should be numeric (seconds), got "' . $raw . '"' . PHP_EOL);
 
             return null;
         }
 
-        echo $value;
+        $numeric = (float) $value;
+        if ($numeric < 0) {
+            fwrite(STDERR, 'Warning: Environment variable ' . self::CONFIG_ENV_TIMEOUT .
+                ' must be >= 0, got "' . $raw . '"' . PHP_EOL);
 
-        return (int) $value;
+            return null;
+        }
+
+        return $numeric;
     }
 }

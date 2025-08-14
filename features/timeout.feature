@@ -54,3 +54,41 @@ Feature: Only fail "Then" steps after timeout has expired
     And the BEHAT_RETRY_TIMEOUT environment variable is set to "2"
     When I run Behat
     Then it should pass
+
+    Scenario: Should validate BEHAT_RETRY_TIMEOUT environment variable is numeric
+      Given a Behat configuration containing:
+          """
+          default:
+            suites:
+              default:
+                contexts:
+                  - FeatureContext
+            extensions:
+              Chekote\BehatRetryExtension:
+                timeout: 0
+          """
+      And the BEHAT_RETRY_TIMEOUT environment variable is set to "ABC"
+      When I run Behat
+      Then it should fail with:
+          """
+          Warning: Environment variable BEHAT_RETRY_TIMEOUT should be numeric (seconds), got "ABC"
+          """
+
+    Scenario: Should validate BEHAT_RETRY_TIMEOUT environment variable is not negative
+      Given a Behat configuration containing:
+          """
+          default:
+            suites:
+              default:
+                contexts:
+                  - FeatureContext
+            extensions:
+              Chekote\BehatRetryExtension:
+                timeout: 0
+          """
+      And the BEHAT_RETRY_TIMEOUT environment variable is set to "-1"
+      When I run Behat
+      Then it should fail with:
+          """
+          Warning: Environment variable BEHAT_RETRY_TIMEOUT must be >= 0, got "-1"
+          """
