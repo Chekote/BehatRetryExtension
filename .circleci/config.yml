@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run:
           name: Install Composer
-          command: bin/init/install_composer.sh
+          command: ./bin/init/install_composer.sh
 
       # Download and cache dependencies
       - restore_cache:
@@ -28,7 +28,7 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: ./bin/composer install -n --prefer-dist
+      - run: ./bin/php ./bin/composer install -n --prefer-dist
 
       - save_cache:
           paths:
