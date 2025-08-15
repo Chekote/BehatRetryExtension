@@ -12,6 +12,9 @@ use FriendsOfBehat\TestContext\Context\TestContext;
  */
 class FeatureContext implements Context
 {
+    /** @var string */
+    const TIMEOUT_ENV_VAR = 'BEHAT_RETRY_TIMEOUT';
+
     /** @var TestContext */
     protected $testContext;
 
@@ -39,6 +42,16 @@ class FeatureContext implements Context
     }
 
     /**
+     * Clears the BEHAT_RETRY_TIMEOUT environment variable before each scenario.
+     *
+     * @BeforeScenario
+     */
+    public function clearBehatRetryTimeout(): void
+    {
+        putenv(self::TIMEOUT_ENV_VAR . '=');
+    }
+
+    /**
      * Sets the working directory for tbe TestContext's Behat.
      *
      * @Given the Behat working dir is :dir
@@ -53,5 +66,17 @@ class FeatureContext implements Context
                 $this->testContext->thereIsFile($iterator->getSubPathName(), file_get_contents((string) $item));
             }
         }
+    }
+
+    /**
+     * Sets an environment variable.
+     *
+     * @Given the BEHAT_RETRY_TIMEOUT environment variable is set to :value
+     *
+     * @param string $value the variable value.
+     */
+    public function theTimeoutEnvironmentVariableIsSetTo(string $value): void
+    {
+        putenv(self::TIMEOUT_ENV_VAR . '=' . $value);
     }
 }

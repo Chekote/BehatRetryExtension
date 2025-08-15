@@ -5,6 +5,7 @@
 
 # shellcheck disable=SC2086
 docker run \
+    -e "BEHAT_RETRY_TIMEOUT=$BEHAT_RETRY_TIMEOUT" \
     -e "LOCAL_USER_ID=$DOCKER_HOST_USER_ID" \
     -i \
     $TTY \
