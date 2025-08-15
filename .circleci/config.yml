@@ -5,9 +5,8 @@
 version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: chekote/php:7.3.33-behat3.4
+    machine:
+      image: ubuntu-2404:current
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -37,4 +36,4 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-      - run: ./vendor/bin/behat
+      - run: ./bin/php ./vendor/bin/behat
